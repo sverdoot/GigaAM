@@ -86,6 +86,7 @@ def load_model(
     use_flash: Optional[bool] = False,
     device: Optional[Union[str, torch.device]] = None,
     download_root: Optional[str] = None,
+    weights_only: bool = False,
 ) -> Union[GigaAM, GigaAMEmo, GigaAMASR]:
     """
     Load the GigaAM model by name.
@@ -115,7 +116,7 @@ def load_model(
     model_name, model_path = _download_model(model_name, download_root)
     tokenizer_path = _download_tokenizer(model_name, download_root)
 
-    checkpoint = torch.load(model_path, map_location="cpu")
+    checkpoint = torch.load(model_path, map_location="cpu", weights_only=weights_only)
 
     if use_flash is not None:
         checkpoint["cfg"].encoder.flash_attn = use_flash
